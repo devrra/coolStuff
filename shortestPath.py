@@ -24,6 +24,7 @@ init = [0, 0]
 goal = [len(grid)-1, len(grid[0])-1]
 cost = 1
 G = 0
+E = 0
 delta = [[-1, 0], # go up
          [ 0,-1], # go left
          [ 1, 0], # go down
@@ -37,11 +38,16 @@ def search(grid,init,goal,cost):
     # insert code here
     # ----------------------------------------
     visited = grid[:][:] ## 0 - can be visited, 1- do not visit
+    expand = [[-1 for cell in row] for row in grid]
     class cell:
         def __init__(self,pos,g):
             self.pos = pos
             self.g = g
             self.visit()
+            r,c = pos
+            global E
+            expand[r][c] = E
+            E += 1
             if pos == goal:
                 global G
                 done = True
@@ -75,6 +81,8 @@ def search(grid,init,goal,cost):
             Open[0].explore()
         except:
             break
+    for i in range(len(expand)):
+        print(expand[i])
     if G:    
         path = [G]+goal    
         return path
