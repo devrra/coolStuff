@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 forward = [[-1,0],[0,-1],[1,0],[0,1]]
 forward_name = ['up','left','down','right']
 action = [-1,0,1]
@@ -21,20 +23,20 @@ def optimum_policy2D(grid, init, goal, cost):
 
     while [r,c]!=goal:
         #print([r,c])
-        presentRoute = Routes[0]
+        presentRoute = deepcopy(Routes[0])
         for i in range(len(action)):
             #print('----i = ',i,'-----')
             dr, dc = forward[(presentRoute[2]+action[i])%4]
             #print('            ',(dr,dc),'---',action_name[i])
             if r+dr in range(len(grid)) and c+dc in range(len(grid[0])) and value[r+dr][c+dc]!=999:
-                thisRoute = presentRoute[:]
+                thisRoute = deepcopy(presentRoute[:])
                 thisRoute[1].append([r+dr,c+dc])
                 thisRoute[0] += cost[i]
                 thisRoute[2] = (thisRoute[2]+action[i])%4
                 ##print('            thisRoute\'s cost : ',thisRoute[0])
                 ##print('            thisRoute\'s orientation : ',forward_name[thisRoute[2]])
                 ##print('            thisRoute\'s last cell : ',thisRoute[1][-1])
-                Routes.append(thisRoute[:])
+                Routes.append(thisRoute)
                 del thisRoute
                 ##print('            number of Routes : ',len(Routes))
                 ##print('\n next FOR Loop iteration \n-------------------------------------')
